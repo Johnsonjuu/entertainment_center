@@ -6,15 +6,20 @@ import re
 main_page_head = '''
 <head>
     <meta charset="utf-8">
-    <title>Fresh Tomatoes!</title>
+    <title>CmL's Top 8</title>
     <!-- Bootstrap 3 -->
     <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap-theme.min.css">
     <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
     <script src="https://netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
+    <!-- added jquery ui dependencies -->
+    <script src="http://code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css">
+    <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
     <style type="text/css" media="screen">
         body {
             padding-top: 80px;
+            background-color: #FFCC66;
         }
         #trailer .modal-dialog {
             margin-top: 200px;
@@ -36,7 +41,7 @@ main_page_head = '''
             padding-top: 20px;
         }
         .movie-tile:hover {
-            background-color: #EEE;
+            background-color: #FFC;
             cursor: pointer;
         }
         .scale-media {
@@ -77,6 +82,18 @@ main_page_head = '''
             $(this).next("div").show("fast", showNext);
           });
         });
+        // Tooltip integration for jQuery UI and allowing of HTML in tooltip
+        $(function() {
+            $(document).tooltip({
+                content: function() {
+                return $(this).attr('title');
+                }
+            });
+        });
+        // Poistioning for jQuery UI tooltip
+        $(document).tooltip({
+            position: { my: "left top", at: "right top", collision: "flipfit" }
+        });
     </script>
 </head>
 '''
@@ -98,14 +115,36 @@ main_page_content = '''
         </div>
       </div>
     </div>
-    
+
     <!-- Main Page Content -->
     <div class="container">
       <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
         <div class="container">
           <div class="navbar-header">
-            <a class="navbar-brand" href="#">Fresh Tomatoes Movie Trailers</a>
+            <a class="navbar-brand" href="#" style="color: #BFFC44">CmL's Top 8 Movies</a>
           </div>
+              <ul class="nav navbar-nav navbar-right nav-pills">
+                <li>
+                    <a href="http://facebook.com/" class="btn btn-social-icon btn-facebook">
+                        <i class="fa fa-facebook"></i>
+                    </a>
+                </li>
+                <li>
+                    <a href="http://twitter.com/" class="btn btn-social-icon btn-twitter">
+                        <i class="fa fa-twitter"></i>
+                    </a>
+                </li>
+                <li>
+                    <a href="http://www.linkedin.com/in/" class="btn btn-social-icon btn-linkedin">
+                        <i class="fa fa-linkedin"></i>
+                    </a>
+                </li>
+                <li>
+                    <a href="https://github.com/carlmlane" class="btn btn-social-icon btn-github">
+                        <i class="fa fa-github"></i>
+                    </a>
+                </li>
+              </ul>
         </div>
       </div>
     </div>
@@ -119,8 +158,10 @@ main_page_content = '''
 # A single movie entry html template
 movie_tile_content = '''
 <div class="col-md-3 col-lg-3 movie-tile text-center" data-trailer-youtube-id="{trailer_youtube_id}" data-toggle="modal" data-target="#trailer">
+<div title="<div style='background-color: #CCC; border: dashed; border-width: 1px'><em>Starring:</em> <b>{movie_cast}</b></div><br/><em>Plot:</em> {movie_storyline}">
     <img src="{poster_image_url}" width="220" height="342">
     <h2>{movie_title}</h2>
+</div>
 </div>
 '''
 
@@ -134,10 +175,13 @@ def create_movie_tiles_content(movies):
         trailer_youtube_id = youtube_id_match.group(0) if youtube_id_match else None
 
         # Append the tile for the movie with its content filled in
+        # Added movie storyline and cast to be accessable by page template
         content += movie_tile_content.format(
             movie_title=movie.title,
             poster_image_url=movie.poster_image_url,
-            trailer_youtube_id=trailer_youtube_id
+            trailer_youtube_id=trailer_youtube_id,
+            movie_storyline=movie.storyline,
+            movie_cast=movie.cast
         )
     return content
 
