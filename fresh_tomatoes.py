@@ -12,9 +12,10 @@ main_page_head = '''
     <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap-theme.min.css">
     <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
     <script src="https://netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
-    <!-- added jquery ui dependencies -->
+    <!-- added jquery ui for creating mouseover tooltip -->
     <script src="http://code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
     <link rel="stylesheet" href="http://code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css">
+    <!-- added font awesome for social media buttons -->
     <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
     <style type="text/css" media="screen">
         body {
@@ -123,6 +124,7 @@ main_page_content = '''
           <div class="navbar-header">
             <a class="navbar-brand" href="#" style="color: #BFFC44">CmL's Top 8 Movies</a>
           </div>
+            <!-- Social media icons in nav bar -->
               <ul class="nav navbar-nav navbar-right nav-pills">
                 <li>
                     <a href="http://facebook.com/" class="btn btn-social-icon btn-facebook">
@@ -148,6 +150,7 @@ main_page_content = '''
         </div>
       </div>
     </div>
+    <!-- container for movie tiles section -->
     <div class="container">
       {movie_tiles}
     </div>
@@ -155,10 +158,14 @@ main_page_content = '''
 </html>
 '''
 
-# A single movie entry html template
+# A single movie entry's html template
+# Includes a mouseover tooltip for showing movie's plot & starring actors
 movie_tile_content = '''
+
 <div class="col-md-3 col-lg-3 movie-tile text-center" data-trailer-youtube-id="{trailer_youtube_id}" data-toggle="modal" data-target="#trailer">
+<!-- HTML in title will display in the mouseover tooltip -->
 <div title="<div style='background-color: #CCC; border: dashed; border-width: 1px'><em>Starring:</em> <b>{movie_cast}</b></div><br/><em>Plot:</em> {movie_storyline}">
+<!-- Poster image and title that will display on front of tile -->
     <img src="{poster_image_url}" width="220" height="342">
     <h2>{movie_title}</h2>
 </div>
@@ -166,7 +173,17 @@ movie_tile_content = '''
 '''
 
 def create_movie_tiles_content(movies):
-    # The HTML content for this section of the page
+    """ Generates the HTML content for the movie tiles container.
+
+        Generates an appropriate YouTube URL for each movie and initializes
+        the movies' information from the input array.
+
+        Args:
+            movies: An array of movies to create tiles on HTML template.
+
+        Returns:
+            A string of all movie's information.
+    """
     content = ''
     for movie in movies:
         # Extract the youtube ID from the url
@@ -186,6 +203,22 @@ def create_movie_tiles_content(movies):
     return content
 
 def open_movies_page(movies):
+    """ Writes the HTML file from base template and movies array.
+
+        Creates an HTML file named fresh_tomatoes.html inside the same
+        directory as entertainment_center.py. If a previous version of
+        fresh_tomatoes.html exists, it will be overwritten. Upon creating
+        the HTML file, it will be automatically be openened by your default
+        web broswer.
+
+    Args:
+        movies: An array of movies to be displayed in HTML template.
+
+    Returns:
+        An HTML file named fresh_tomatoes.html to the programs's directory.
+        Opens the computer's default web browser to display the file.
+
+    """
     # Create or overwrite the output file
     output_file = open('fresh_tomatoes.html', 'w')
 
