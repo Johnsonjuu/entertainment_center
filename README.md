@@ -13,8 +13,8 @@ http://github.carlmlane.com/fresh_tomatoes.html
 _Python 2.7.9 Is required to run this file.
 Need Python? Look here: https://www.python.org/downloads/_
 
-1. Download ZIP of repositor
+1. Download ZIP of repository
 2. Extract all files to the same folder
-3. Run entertainment_center.py from terminal or command prompt with Python 2.7.9
+3. Run entertainment_center.py from terminal/command prompt with Python 2.7.9
 
 
